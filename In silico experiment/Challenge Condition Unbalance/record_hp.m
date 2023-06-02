@@ -215,3 +215,80 @@ for i =191:238
     Prec_diff_GR1_sto = [Prec_diff_GR1_sto;Prec_GR1(3,:)];
     Prec_diff_GR2_sto = [Prec_diff_GR2_sto;Prec_GR2(3,:)];
 end
+
+
+
+%% Add the quantile width for p_s = 0.99
+
+
+for i = 1:250
+    name = strcat('High_pop',num2str(i),'(var_fixed).mat');
+    try
+        load(name)
+        hl_indi = [];
+        dyn_indi = [];
+        sto_indi = [];
+        for j = 1:100
+            hl_indi = [hl_indi;get_indi(hl.hist(end-10:end,j),Info.Conc(end))];
+            dyn_indi = [dyn_indi;get_indi(dyn.hist(end-11:end,j),Info.Conc(end))];
+            sto_indi = [sto_indi;get_indi(sto.hist(end-11:end,j),Info.Conc(end))];
+        end
+        sto.indi = sto_indi;
+        hl.indi = hl_indi;
+        dyn.indi = dyn_indi;
+    
+    
+        hl.quanti_p = prctile(hl_indi(:,1),[2.5,97.5]);
+        hl.quanti_GR1 = prctile(hl_indi(:,4),[2.5,97.5]);
+        hl.quanti_GR2 = prctile(hl_indi(:,5),[2.5,97.5]);
+    
+        dyn.quanti_p = prctile(dyn_indi(:,1),[2.5,97.5]);
+        dyn.quanti_GR1 = prctile(dyn_indi(:,4),[2.5,97.5]);
+        dyn.quanti_GR2 = prctile(dyn_indi(:,5),[2.5,97.5]);
+    
+    
+        sto.quanti_p = prctile(sto_indi(:,1),[2.5,97.5]);
+        sto.quanti_GR1 = prctile(sto_indi(:,4),[2.5,97.5]);
+        sto.quanti_GR2 = prctile(sto_indi(:,5),[2.5,97.5]);
+        save(name)
+        clear
+    catch
+    end
+end
+
+
+
+%% Record the width
+
+%%
+
+p_norm = [];
+GR1_norm = [];
+GR2_norm = [];
+
+true_p   = [];
+true_GR1 = [];
+true_GR2 = [];
+
+for i = 1:250
+    name = strcat('High_pop',num2str(i),'(var_fixed).mat');
+    try
+        load(name)
+
+    
+        pi = [hl.quanti_p(2) - hl.quanti_p(1);dyn.quanti_p(2) - dyn.quanti_p(1);sto.quanti_p(2) - sto.quanti_p(1)]
+        GR1i = [hl.quanti_GR1(2) - hl.quanti_GR1(1);dyn.quanti_GR1(2) - dyn.quanti_GR1(1);sto.quanti_GR1(2) - sto.quanti_GR1(1)]
+        GR2i = [hl.quanti_GR2(2) - hl.quanti_GR2(1);dyn.quanti_GR2(2) - dyn.quanti_GR2(1);sto.quanti_GR2(2) - sto.quanti_GR2(1)]
+        
+
+    
+        p_norm = [p_norm,pi./sum(pi)]
+        GR1_norm = [GR1_norm,GR1i./sum(GR1i)]
+        GR2_norm = [GR2_norm,GR2i./sum(GR2i)]
+    
+
+    catch
+    end
+end
+
+

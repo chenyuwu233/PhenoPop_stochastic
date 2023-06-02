@@ -1,7 +1,6 @@
 name = {'PhenoPop','End-points','Live cell image'};
 name_pair = {'PP - EP','PP - LC','EP - LC'};
-load("Result\10_NO_CI_width(30).mat") % Experiment Results with Noise std c = 100
-% load("Result\50_NO_CI_width(30).mat") % Experiment Results with Noise std c = 500
+load("Result\CG_CI_width(80).mat")
 %% p
 
 boxplot(p_norm',name)

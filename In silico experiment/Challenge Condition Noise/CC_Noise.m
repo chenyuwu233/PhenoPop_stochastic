@@ -1,9 +1,6 @@
-%% This script is for computing and plotting the confidence interval of different parameter generated from the different model.
+%% This script is for computing the confidence interval of different parameter generated from the different model.
 
 
-%% Set path
-
-cp     = pwd;
 
 
 %% Set Parallel 

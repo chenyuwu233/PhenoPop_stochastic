@@ -102,7 +102,7 @@ ax2.Colormap = Color;
 % % cText = strcat(label,pValue);
 % % pText(1).String = cText(1);
 % % pText(2).String = cText(2);
-title("Phenopop")
+title("PhenoPop")
 ax3 = nexttile;
 h  = pie(dyn_p);
 fontsize(h,26,"pixels")
@@ -187,10 +187,10 @@ sto_yconf = [2.8 2.8 3.2 3.2];
 % fill(GR2_xconf,dyn_yconf,GR2_color)
 % fill(GR2_xconf,sto_yconf,GR2_color)
 
-boxplot(GR1',["Phenopop", "End-points", "Live cell image"],"orientation","horizontal",'Symbol','*r')
+boxplot(GR1',["PhenoPop", "End-points", "Live cell image"],"orientation","horizontal",'Symbol','*r')
 % boxplot(GR1',["End Points model", "Live Cell Image model"],"orientation","horizontal")
 
-boxplot(GR2',["Phenopop", "End-points", "Live cell image"],"orientation","horizontal",'Symbol','*b')
+boxplot(GR2',["PhenoPop", "End-points", "Live cell image"],"orientation","horizontal",'Symbol','*b')
 % boxplot(GR2',[ "End Points model", "Live Cell Image model"],"orientation","horizontal")
 xline(Conc)
 title("GR_{50} estimation")

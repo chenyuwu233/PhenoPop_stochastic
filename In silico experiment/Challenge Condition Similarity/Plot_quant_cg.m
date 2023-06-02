@@ -1,3 +1,5 @@
+load('Result\CG_quant(80).mat')
+
 IG       = [0.15,0.3,0.45,0.85,2.0];
 t = tiledlayout(1,3);
 ax1 = nexttile;
@@ -8,7 +10,7 @@ sto_p = plot(IG,mean(Prec_diff_p_sto),'-o');
 xlabel('The value of E_r')
 ylabel('Mean Absolute Log Ratio')
 yline(0,'-.')
-legend([hl_p,dyn_p,sto_p],{'Phenopop','End-points','Live cell image'})
+legend([hl_p,dyn_p,sto_p],{'PhenoPop','End-points','Live cell image'})
 title('Initial proportion estimation')
 
 ax2 = nexttile;
@@ -19,7 +21,7 @@ sto_GR1 = plot(IG,mean(Prec_diff_GR1_sto),'-o');
 xlabel('The value of E_r')
 ylabel('Mean Absolute Log Ratio')
 yline(0,'-.')
-legend([hl_GR1,dyn_GR1,sto_GR1],{'Phenopop','End-points','Live cell image'})
+legend([hl_GR1,dyn_GR1,sto_GR1],{'PhenoPop','End-points','Live cell image'})
 title('Sensitive GR_{50} estimation')
 
 ax3 = nexttile;
@@ -30,7 +32,7 @@ sto_GR2 = plot(IG,mean(Prec_diff_GR2_sto),'-o');
 xlabel('The value of E_r')
 ylabel('Mean Absolute Log Ratio')
 yline(0,'-.')
-legend([hl_GR2,dyn_GR2,sto_GR2],{'Phenopop','End-points','Live cell image'})
+legend([hl_GR2,dyn_GR2,sto_GR2],{'PhenoPop','End-points','Live cell image'})
 title('Resistant GR_{50} estimation')
 
 
