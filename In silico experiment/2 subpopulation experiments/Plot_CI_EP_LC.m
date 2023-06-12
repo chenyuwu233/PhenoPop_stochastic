@@ -72,50 +72,21 @@ sto_p  = [mean(sto.p), 1 - mean(sto.p)];
 
 t = tiledlayout('flow');
 ax1 = nexttile;
-% ax = gca();
 h  = pie(True_p);
-% fontsize(h,26,"pixels")
+set(h(2:2:end),'FontSize',25,'FontWeight','bold');
 ax1.Colormap = Color;
-% pText = findobj(h,'Type','text');
-% pValue = get(pText,'String');
-% cText = strcat(label,pValue);
-% pText(1).String = cText(1);
-% pText(2).String = cText(2);
 title("True initial proportion")
-% ax2 = nexttile;
-% h  = pie(hl_p);
-% fontsize(h,26,"pixels")
-% ax2.Colormap = Color;
-% % pText = findobj(h,'Type','text');
-% % pValue = get(pText,'String');
-% % cText = strcat(label,pValue);
-% % pText(1).String = cText(1);
-% % pText(2).String = cText(2);
-% title("Phenopop model")
 ax3 = nexttile;
 h  = pie(dyn_p);
-% fontsize(h,26,"pixels")
+set(h(2:2:end),'FontSize',25,'FontWeight','bold');
 ax3.Colormap = Color;
-% pText = findobj(h,'Type','text');
-% pValue = get(pText,'String');
-% cText = strcat(label,pValue);
-% pText(1).String = cText(1);
-% pText(2).String = cText(2);
 title("End-points")
 ax4 = nexttile;
 h  = pie(sto_p);
-% fontsize(h,26,"pixels")
+set(h(2:2:end),'FontSize',25,'FontWeight','bold');
 ax4.Colormap = Color;
-% pText = findobj(h,'Type','text');
-% pValue = get(pText,'String');
-% cText = strcat(label,pValue);
-% pText(1).String = cText(1);
-% pText(2).String = cText(2);
 title("Live cell image")
 
-% gax = geoaxes(t);
-% gax.Layout.Tile = 4;
-% gax.Layout.TileSpan = [1 3];
 
 
 %%  Plot Proportion CI
@@ -177,10 +148,10 @@ sto_yconf = [1.8 1.8 2.2 2.2];
 % fill(GR2_xconf,sto_yconf,GR2_color)
 
 % boxplot(GR1',["Phenopop model", "End Points model", "Live Cell Image model"],"orientation","horizontal")
-boxplot(GR1',["End-points", "Live cell image"],"orientation","horizontal","Symbol",'*r')
+bh1 = boxplot(GR1',["End-points", "Live cell image"],"orientation","horizontal","Symbol",'*r');
 
 % boxplot(GR2',["Phenopop model", "End Points model", "Live Cell Image model"],"orientation","horizontal")
-boxplot(GR2',[ "End-points", "Live cell image"],"orientation","horizontal",'Symbol','*b')
+bh2 = boxplot(GR2',[ "End-points", "Live cell image"],"orientation","horizontal",'Symbol','*b');
 xline(Conc)
 title("GR_{50} estimation")
 % fontsize(gca,26,"pixels")
@@ -196,11 +167,16 @@ ax5.Layout.TileSpan = [1 3];
 % ax4.Layout.TileSpan = [1 2];
 
 
-ax1.FontSize = 26;
+ax1.FontSize = 25;
 % ax2.FontSize = 26;% Pie chart
-ax3.FontSize = 26;% Pie chart
-ax4.FontSize = 26;% Pie chart
-ax5.FontSize = 26;
-
+ax3.FontSize = 25;% Pie chart
+ax4.FontSize = 25;% Pie chart 
+ax5.FontSize = 25;
+ax1.FontWeight = 'bold';
+ax3.FontWeight = 'bold';
+ax4.FontWeight = 'bold';
+ax5.FontWeight = 'bold';
+set(bh1,'LineWidth',3)
+set(bh2,'LineWidth',3)
 
 

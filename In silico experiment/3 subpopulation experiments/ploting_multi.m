@@ -26,38 +26,48 @@ end
 NAME = num2cell(NAME);
 
 axt    = nexttile;
+
 ht     = pie(True_p);
-% fontsize(ht,25,"pixels")
+set(ht(2:2:end),'FontSize',25,'FontWeight','bold');
 axt.FontSize = 25;
+axt.FontWeight = 'bold';
 axt.Colormap = Color;
+
 title('True initial proportion')
-% legend(NAME)
+
 axhl   = nexttile;
+
 hhl    = pie(hl_p);
-% fontsize(hhl,25,"pixels")
+set(hhl(2:2:end),'FontSize',25,'FontWeight','bold');
 axhl.FontSize = 25;
+axhl.FontWeight = 'bold';
 axhl.Colormap = Color;
-% legend(NAME)
+
 title('Phenopop')
+
 axdyn  = nexttile;
+
 hdyn   = pie(dyn_p);
-% fontsize(hdyn,25,"pixels")
+set(hdyn(2:2:end),'FontSize',25,'FontWeight','bold');
 axdyn.FontSize = 25;
+axdyn.FontWeight = 'bold';
 axdyn.Colormap = Color;
-% legend(NAME)
+
 title('End-points')
+
 axsto  = nexttile;
+
 hsto   = pie(sto_p);
-% fontsize(hsto,25,"pixels")
-axsto.FontSize = 25;
-axsto.Colormap = Color;
-% legend(NAME)
+set(hsto(2:2:end),'FontSize',25,'FontWeight','bold');
+
 title('Live cell image')
 
 %%
 axGR = nexttile;
 axGR.Layout.Tile = 5;
 axGR.Layout.TileSpan = [1 4];
+axGR.FontSize = 25;
+axGR.FontWeight = 'bold';
 
 Est_GR = zeros(3*num_sub_GE,size(Boot_hl_indi,2));
 for i = 1:num_sub_GE
@@ -92,10 +102,14 @@ for i = 1:num_sub_GE
     fill(GRi_xconf,GR_yconf,Color(i,:),'FaceAlpha',0.3)
 end
 
-boxplot(Est_GR(1:3,:)',["Phenopop", "End-points", "Live cell image"],"orientation","horizontal",'Symbol','*r')
-boxplot(Est_GR(4:6,:)',["Phenopop", "End-points", "Live cell image"],"orientation","horizontal",'Symbol','*b')
-boxplot(Est_GR(7:9,:)',["Phenopop", "End-points", "Live cell image"],"orientation","horizontal",'Symbol','*y')
+bh1 = boxplot(Est_GR(1:3,:)',["Phenopop", "End-points", "Live cell image"],"orientation","horizontal",'Symbol','*r');
+bh2 = boxplot(Est_GR(4:6,:)',["Phenopop", "End-points", "Live cell image"],"orientation","horizontal",'Symbol','*b');
+bh3 = boxplot(Est_GR(7:9,:)',["Phenopop", "End-points", "Live cell image"],"orientation","horizontal",'Symbol','*y');
 % boxplot(Est_GR(10:12,:)',["Phenopop model", "End Points model", "Live Cell Image model"],"orientation","horizontal",'Symbol','*g')
+
+set(bh1,'LineWidth',3)
+set(bh2,'LineWidth',3)
+set(bh3,'LineWidth',3)
 
 
 

@@ -85,7 +85,7 @@ t = tiledlayout('flow');
 ax1 = nexttile;
 % ax = gca();
 h  = pie(True_p);
-fontsize(h,26,"pixels")
+set(h(2:2:end),'FontSize',25,'FontWeight','bold');
 ax1.Colormap = Color;
 % pText = findobj(h,'Type','text');
 % pValue = get(pText,'String');
@@ -95,7 +95,7 @@ ax1.Colormap = Color;
 title("True initial proportion")
 ax2 = nexttile;
 h  = pie(hl_p);
-fontsize(h,26,"pixels")
+set(h(2:2:end),'FontSize',25,'FontWeight','bold');
 ax2.Colormap = Color;
 % % pText = findobj(h,'Type','text');
 % % pValue = get(pText,'String');
@@ -105,7 +105,7 @@ ax2.Colormap = Color;
 title("PhenoPop")
 ax3 = nexttile;
 h  = pie(dyn_p);
-fontsize(h,26,"pixels")
+set(h(2:2:end),'FontSize',25,'FontWeight','bold');
 ax3.Colormap = Color;
 % pText = findobj(h,'Type','text');
 % pValue = get(pText,'String');
@@ -115,7 +115,7 @@ ax3.Colormap = Color;
 title("End-points")
 ax4 = nexttile;
 h  = pie(sto_p);
-fontsize(h,26,"pixels")
+set(h(2:2:end),'FontSize',25,'FontWeight','bold');
 ax4.Colormap = Color;
 % pText = findobj(h,'Type','text');
 % pValue = get(pText,'String');
@@ -187,10 +187,10 @@ sto_yconf = [2.8 2.8 3.2 3.2];
 % fill(GR2_xconf,dyn_yconf,GR2_color)
 % fill(GR2_xconf,sto_yconf,GR2_color)
 
-boxplot(GR1',["PhenoPop", "End-points", "Live cell image"],"orientation","horizontal",'Symbol','*r')
+bh1 = boxplot(GR1',["PhenoPop", "End-points", "Live cell image"],"orientation","horizontal",'Symbol','*r');
 % boxplot(GR1',["End Points model", "Live Cell Image model"],"orientation","horizontal")
 
-boxplot(GR2',["PhenoPop", "End-points", "Live cell image"],"orientation","horizontal",'Symbol','*b')
+bh2 = boxplot(GR2',["PhenoPop", "End-points", "Live cell image"],"orientation","horizontal",'Symbol','*b');
 % boxplot(GR2',[ "End Points model", "Live Cell Image model"],"orientation","horizontal")
 xline(Conc)
 title("GR_{50} estimation")
@@ -207,11 +207,18 @@ ax5.Layout.TileSpan = [1 4];
 % ax4.Layout.TileSpan = [1 2];
 
 
-ax1.FontSize = 26;
-ax2.FontSize = 26;% Pie chart
-ax3.FontSize = 26;% Pie chart
-ax4.FontSize = 26;% Pie chart
-ax5.FontSize = 26;
+ax1.FontSize = 25;
+ax2.FontSize = 25;% Pie chart
+ax3.FontSize = 25;% Pie chart
+ax4.FontSize = 25;% Pie chart
+ax5.FontSize = 25;
+ax1.FontWeight = 'bold';
+ax2.FontWeight = 'bold';% Pie chart
+ax3.FontWeight = 'bold';% Pie chart
+ax4.FontWeight = 'bold';% Pie chart
+ax5.FontWeight = 'bold';
+set(bh1,'LineWidth',3)
+set(bh2,'LineWidth',3)
 
 
 

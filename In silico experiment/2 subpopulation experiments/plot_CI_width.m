@@ -1,7 +1,9 @@
 load('Result\CI_width(30).mat')
 %% p
 
-boxplot(p_norm',name)
+bh = boxplot(p_norm',name);
+set(gca,'FontSize',23,'FontWeight','bold')
+set(bh,'LineWidth',3)
 ylim([0,1])
 xlabel('method')
 ylabel('CI width')
@@ -13,7 +15,9 @@ H = sigstar({[1,2],[2,3],[1,3]},U_stat);
 % title('Initial proportion confidence interval width (normalized)')
 %% GR1
 
-boxplot(GR1_norm',name)
+bh = boxplot(GR1_norm',name);
+set(gca,'FontSize',23,'FontWeight','bold')
+set(bh,'LineWidth',3)
 ylim([0,1])
 xlabel('method')
 ylabel('CI width')
@@ -26,7 +30,9 @@ H = sigstar({[1,2],[2,3],[1,3]},U_stat);
 
 %% GR2
 
-boxplot(GR2_norm',name)
+bh = boxplot(GR2_norm',name);
+set(gca,'FontSize',23,'FontWeight','bold')
+set(bh,'LineWidth',3)
 ylim([0,1])
 xlabel('method')
 ylabel('CI width')
