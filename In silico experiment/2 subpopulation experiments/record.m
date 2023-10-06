@@ -12,7 +12,7 @@ nomal_GR2 = zeros(1,3);
 
 %%
 for i = 40:69
-    name = strcat('CI',num2str(i),'(var_fixed).mat');
+    name = strcat('Result/CI',num2str(i),'(var_fixed).mat');
     load(name)
     true_param = get_indi(Info.theta,Info.Conc(end));
     if true_param(1) > hl.p(2) || true_param(1) < hl.p(1)
@@ -94,7 +94,7 @@ for i = 41:70
     if i == 113 || i == 126 ||i == 147 ||i == 149
         continue
     end
-    name = append('CI',num2str(i),'(var_fixed).mat');
+    name = append('Result/CI',num2str(i),'(point_estimate).mat');
     load(name)
     Prec_p = [];
     Prec_GR1 = [];
@@ -103,20 +103,23 @@ for i = 41:70
         theta = Info.theta;
 %         theta(12) = No(k);
         indi_ip  = get_indi(theta,Info.Conc(end));
-        Boot_hl  = hl.hist(11*k-10:11*k,:);
-        Boot_dyn = dyn.hist(12*k-11:12*k,:);
-        Boot_sto = sto.hist(12*k-11:12*k,:);
-        Boot_hl_GR  = [];
-        Boot_dyn_GR = [];
-        Boot_sto_GR = [];
-        for j = 1:100
-            indi_hl  = get_indi(Boot_hl(:,j),Info.Conc(end));
-            indi_dyn = get_indi(Boot_dyn(:,j),Info.Conc(end));
-            indi_sto = get_indi(Boot_sto(:,j),Info.Conc(end));
-            Boot_hl_GR  = [Boot_hl_GR,indi_hl(4:5)'];
-            Boot_dyn_GR = [Boot_dyn_GR,indi_dyn(4:5)'];
-            Boot_sto_GR = [Boot_sto_GR,indi_sto(4:5)'];
-        end
+        indi_hl  = get_indi(opt_xx_hl,Conc(end));
+        indi_dyn = get_indi(opt_xx_dyn,Conc(end));
+        indi_sto = get_indi(opt_xx_sto,Conc(end));
+%         Boot_hl  = hl.hist(11*k-10:11*k,:);
+%         Boot_dyn = dyn.hist(12*k-11:12*k,:);
+%         Boot_sto = sto.hist(12*k-11:12*k,:);
+%         Boot_hl_GR  = [];
+%         Boot_dyn_GR = [];
+%         Boot_sto_GR = [];
+%         for j = 1:100
+%             indi_hl  = get_indi(Boot_hl(:,j),Info.Conc(end));
+%             indi_dyn = get_indi(Boot_dyn(:,j),Info.Conc(end));
+%             indi_sto = get_indi(Boot_sto(:,j),Info.Conc(end));
+%             Boot_hl_GR  = [Boot_hl_GR,indi_hl(4:5)'];
+%             Boot_dyn_GR = [Boot_dyn_GR,indi_dyn(4:5)'];
+%             Boot_sto_GR = [Boot_sto_GR,indi_sto(4:5)'];
+%         end
 %         prec_p_hl    = abs(mean(Boot_hl(5,:)) - indi_ip(1))/indi_ip(1);
 %         prec_GR1_hl  = abs(mean(Boot_hl_GR(1,:)) - indi_ip(4))/indi_ip(4);
 %         prec_GR2_hl  = abs(mean(Boot_hl_GR(2,:)) - indi_ip(5))/indi_ip(5);
@@ -127,15 +130,27 @@ for i = 41:70
 %         prec_GR1_sto = abs(mean(Boot_sto_GR(1,:)) - indi_ip(4))/indi_ip(4);
 %         prec_GR2_sto = abs(mean(Boot_sto_GR(2,:)) - indi_ip(5))/indi_ip(5);
         
-        prec_p_hl    = max(log(mean(Boot_hl(5,:))/indi_ip(1)),log(indi_ip(1)/mean(Boot_hl(5,:))));
-        prec_GR1_hl  = max(log(mean(Boot_hl_GR(1,:))/indi_ip(4)),log(indi_ip(4)/mean(Boot_hl_GR(1,:))));
-        prec_GR2_hl  = max(log(mean(Boot_hl_GR(2,:))/indi_ip(5)),log(indi_ip(5)/mean(Boot_hl_GR(2,:))));
-        prec_p_dyn   = max(log(mean(Boot_dyn(1,:))/indi_ip(1)),log(indi_ip(1)/mean(Boot_dyn(1,:))));
-        prec_GR1_dyn = max(log(mean(Boot_dyn_GR(1,:))/indi_ip(4)),log(indi_ip(4)/mean(Boot_dyn_GR(1,:))));
-        prec_GR2_dyn = max(log(mean(Boot_dyn_GR(2,:))/indi_ip(5)),log(indi_ip(5)/mean(Boot_dyn_GR(2,:))));
-        prec_p_sto   = max(log(mean(Boot_sto(1,:))/indi_ip(1)),log(indi_ip(1)/mean(Boot_sto(1,:))));
-        prec_GR1_sto = max(log(mean(Boot_sto_GR(1,:))/indi_ip(4)),log(indi_ip(4)/mean(Boot_sto_GR(1,:))));
-        prec_GR2_sto = max(log(mean(Boot_sto_GR(2,:))/indi_ip(5)),log(indi_ip(5)/mean(Boot_sto_GR(2,:))));
+        prec_p_hl    = abs(log(indi_hl(1)/indi_ip(1)));
+        prec_GR1_hl  = abs(log(indi_hl(4)/indi_ip(4)));
+        prec_GR2_hl  = abs(log(indi_hl(5)/indi_ip(5)));
+        prec_p_dyn   = abs(log(indi_dyn(1)/indi_ip(1)));
+        prec_GR1_dyn = abs(log(indi_dyn(4)/indi_ip(4)));
+        prec_GR2_dyn = abs(log(indi_dyn(5)/indi_ip(5)));
+        prec_p_sto   = abs(log(indi_sto(1)/indi_ip(1)));
+        prec_GR1_sto = abs(log(indi_sto(4)/indi_ip(4)));
+        prec_GR2_sto = abs(log(indi_sto(5)/indi_ip(5)));
+
+
+
+%         prec_p_hl    = get_log_acc(Boot_hl(5,:),indi_ip(1));
+%         prec_GR1_hl  = get_log_acc(Boot_hl_GR(1,:),indi_ip(4));
+%         prec_GR2_hl  = get_log_acc(Boot_hl_GR(2,:),indi_ip(5));
+%         prec_p_dyn   = get_log_acc(Boot_dyn(1,:),indi_ip(1));
+%         prec_GR1_dyn = get_log_acc(Boot_dyn_GR(1,:),indi_ip(4));
+%         prec_GR2_dyn = get_log_acc(Boot_dyn_GR(2,:),indi_ip(5));
+%         prec_p_sto   = get_log_acc(Boot_sto(1,:),indi_ip(1));
+%         prec_GR1_sto = get_log_acc(Boot_sto_GR(1,:),indi_ip(4));
+%         prec_GR2_sto = get_log_acc(Boot_sto_GR(2,:),indi_ip(5));
 
 
 
@@ -249,7 +264,7 @@ indi_p = zeros(1,3);
 indi_GR1 = zeros(1,3);
 indi_GR2 = zeros(1,3);
 
-for i = 40:69
+for i = 41:70
     name = strcat('CI',num2str(i),'(var_fixed).mat');
     load(name)
     true_param = get_indi(Info.theta,Info.Conc(end));
@@ -303,13 +318,47 @@ GR2_a = [GR2_norm(1,:),GR2_norm(2,:),GR2_norm(3,:)];
 GR2_a = [GR2_a;indi]';
 
 
-%%
-p_t = array2table(p_a);
-GR1_t = array2table(GR1_a);
-GR2_t = array2table(GR2_a);
 
-writetable(p_t,'p_prctil(30).xlsx');
-writetable(GR1_t,'GR1_prctil(30).xlsx');
-writetable(GR2_t,'GR2_prctil(30).xlsx');
+
+
+
+%% Record point estimation error
+
+hl_error  = [];
+dyn_error = [];
+sto_error = [];
+hl_indi_error = [];
+dyn_indi_error = [];
+sto_indi_error = [];
+
+
+
+for idx = 41:70
+
+    name = strcat('Result\CI',num2str(idx),'(point_estimate).mat');
+    load(name)
+    
+    theta_PP = [Info.theta(2)-Info.theta(3);Info.theta(4:6);Info.theta(1);
+                Info.theta(7)-Info.theta(8);Info.theta(9:11)];
+
+    True_indi = get_indi(Info.theta,max(Info.Conc));
+    hl_indi   = get_indi(opt_xx_hl,max(Info.Conc));
+    dyn_indi  = get_indi(opt_xx_dyn,max(Info.Conc));
+    sto_indi  = get_indi(opt_xx_sto,max(Info.Conc));
+
+    hl_error = [hl_error,get_acc(opt_xx_hl(1:end-2),theta_PP)];
+    dyn_error = [dyn_error,get_acc(opt_xx_dyn,Info.theta)];
+    sto_error = [sto_error,get_acc(opt_xx_sto,Info.theta)];
+
+    hl_indi_error = [hl_indi_error;get_log_acc(hl_indi,True_indi)];
+    dyn_indi_error = [dyn_indi_error;get_log_acc(dyn_indi,True_indi)];
+    sto_indi_error = [sto_indi_error;get_log_acc(sto_indi,True_indi)];
+
+
+
+end
+
+save('Result\PE30.mat','hl_error','dyn_error','sto_error', ...
+    'hl_indi_error',"dyn_indi_error","sto_indi_error")
 
 
