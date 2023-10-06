@@ -1,4 +1,4 @@
-load('Result\CG_quant(80).mat')
+load('Result\CG_quant(80_pe).mat')
 
 IG       = [0.15,0.3,0.45,0.85,2.0];
 t = tiledlayout(1,3);
