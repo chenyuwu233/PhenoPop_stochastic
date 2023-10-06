@@ -1,4 +1,4 @@
-load('Result\HP_quant(100).mat')
+load('Result\HP_quant(100_pe).mat')
 
 IP = [0.85,0.9,0.95,0.99];
 t = tiledlayout(1,3);
