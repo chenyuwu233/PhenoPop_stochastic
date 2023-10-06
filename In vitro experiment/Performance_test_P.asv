@@ -1,6 +1,6 @@
     % Imatinib-sensitive and -resistant Ba/F3 cells DATA
     load('Mixture_Data.mat')
-    DATA = BF_11; % Selecting the data from [BF_11,BF_12,BF_21,BF_41].
+    DATA = BF_12; % Selecting the data from [BF_11,BF_12,BF_21,BF_41].
     [NR,NC,NT] = size(DATA);
     lower_mixture_limit = 0.10;
 
@@ -69,7 +69,7 @@
     %% Optimization
     
 
-    num_optim = 500;
+    num_optim = 100;
     options1 = optimoptions(@fmincon,'MaxFunctionEvaluations',5990,'MaxIterations',500,'Display','iter','algorithm','sqp');
 %     func3  = @(x) Cov_diff(DATA, Conc, Time, x,2); 
     func_hl   = @(x)vectorized_objective_function_two_noise_levels_k_subpopulations(x,num_sub,DATA,Conc,Time, ConcT, TimeT, NR);
@@ -83,19 +83,19 @@
     
 
     %% High Low variance model
-    fval2_hl   = [];
-    params2_hl = [];
-    grad2_hl   = [];
-    time2_hl   = [];
-    
-    parfor n=1:num_optim
-        [xx_hl,ff_hl,~,out_hl,~,g_hl,~]  = fmincon(func_hl,x_init_HL(:,n),A_HL,b_HL,[],[],lb_HL,ub_HL,[],options1);
-    %     grad     = norm(g,inf);
-        fval2_hl    = [fval2_hl, ff_hl];
-        params2_hl  = [params2_hl,xx_hl];
-        grad2_hl    = [grad2_hl,g_hl];
-    end
-
+%     fval2_hl   = [];
+%     params2_hl = [];
+%     grad2_hl   = [];
+%     time2_hl   = [];
+%     
+%     parfor n=1:num_optim
+%         [xx_hl,ff_hl,~,out_hl,~,g_hl,~]  = fmincon(func_hl,x_init_HL(:,n),A_HL,b_HL,[],[],lb_HL,ub_HL,[],options1);
+%     %     grad     = norm(g,inf);
+%         fval2_hl    = [fval2_hl, ff_hl];
+%         params2_hl  = [params2_hl,xx_hl];
+%         grad2_hl    = [grad2_hl,g_hl];
+%     end
+    [opt_fval_hl, opt_xx_hl] = vectorized_inference_k_subpopulations_two_noise_levels(DATA, Conc, ConcT, TimeT, ub_HL, lb_HL, num_optim, num_sub, A_HL, b_HL);
 
 
 
@@ -146,15 +146,17 @@
     end
 
     %% Get optimal
-    [opt_fval_hl, idx_hl]   = min(fval2_hl);
+%     [opt_fval_hl, idx_hl]   = min(fval2_hl);
     [opt_fval_dyn, idx_dyn] = min(fval2_dyn);
     [opt_fval_sto, idx_sto] = min(fval2_sto);
     opt_xx_dyn = params2_dyn(:,idx_dyn);
     opt_xx_sto = params2_sto(:,idx_sto);
-    opt_xx_hl  = params2_hl(:,idx_hl);
+%     opt_xx_hl  = params2_hl(:,idx_hl);
     
     
-    
+    opt_xx_sto = GR_sort(opt_xx_sto,max(Conc));
+    opt_xx_hl  = GR_sort(opt_xx_hl,max(Conc));
+    opt_xx_dyn = GR_sort(opt_xx_dyn,max(Conc));
     
     
     %% Compute the AIC/BIC
@@ -164,4 +166,6 @@
     aic_sto = compute_aic(opt_fval_sto,length(opt_xx_sto));
     
     
+
+    save('')
     

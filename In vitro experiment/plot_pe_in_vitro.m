@@ -1,0 +1,178 @@
+%%  Set the color
+
+
+GR1_color = [255 167 112];
+GR2_color = [80  231 235];
+GR1_color = GR1_color./255;
+GR2_color = GR2_color./255;
+Color     = [GR1_color;GR2_color];
+
+
+
+%% Plot the point estimation from mixture data
+
+load('Result\CI_BF41.mat')
+
+True_p = [4/5, 1/5];
+
+% load('Result\CI_BF21.mat')
+% 
+% True_p = [2/3, 1/3];
+
+
+hl_p   = [opt_xx_hl(5), 1 - opt_xx_hl(5)];
+dyn_p  = [opt_xx_dyn(1), 1 - opt_xx_dyn(1)];
+sto_p  = [opt_xx_sto(1), 1 - opt_xx_sto(1)];
+
+
+
+t = tiledlayout('flow');
+ax1 = nexttile;
+h  = pie(True_p);
+set(h(2:2:end),'FontSize',25,'FontWeight','bold');
+ax1.Colormap = Color;
+title("True initial proportion",'FontSize',25)
+ax2 = nexttile;
+h  = pie(hl_p);
+set(h(2:2:end),'FontSize',25,'FontWeight','bold');
+ax2.Colormap = Color;
+title("PhenoPop",'FontSize',25)
+ax3 = nexttile;
+h  = pie(dyn_p);
+set(h(2:2:end),'FontSize',25,'FontWeight','bold');
+ax3.Colormap = Color;
+title("End-points",'FontSize',25)
+ax4 = nexttile;
+h  = pie(sto_p);
+set(h(2:2:end),'FontSize',25,'FontWeight','bold');
+ax4.Colormap = Color;
+title("Live cell image",'FontSize',25)
+
+
+ax5 = nexttile;
+hold on
+y_lim = [0 3];
+xlim([0.01 5])
+ylim(y_lim)
+xticks(Conc)
+set(gca,"Xscale","log",'FontSize',25,'FontWeight','bold')
+
+hl_indi  = get_indi(opt_xx_hl,max(Conc));
+dyn_indi = get_indi(opt_xx_dyn,max(Conc));
+sto_indi = get_indi(opt_xx_sto,max(Conc));
+
+y        = 1*ones(1,12);
+y(7:12)  = 2;
+x        = [hl_indi(4),hl_indi(5),dyn_indi(4),dyn_indi(5),sto_indi(4),sto_indi(5)];
+
+hl_indi_hist = [hl_indi(4),hl_indi(5)];
+dyn_indi_hist = [dyn_indi(4),dyn_indi(5)];
+sto_indi_hist = [sto_indi(4),sto_indi(5)];
+hl_mix_s     = hl_indi(4);
+hl_mix_r     = hl_indi(5);
+dyn_mix_s    = dyn_indi(4);
+dyn_mix_r    = dyn_indi(5);
+sto_mix_s    = sto_indi(4);
+sto_mix_r    = sto_indi(5);
+hl_mono_indi  = [];
+dyn_mono_indi = [];
+sto_mono_indi = [];
+
+load("Result\SENSITIVE_500.mat")
+hl_mono_indi  = [hl_mono_indi,hl_indi(2)];
+dyn_mono_indi = [dyn_mono_indi,dyn_indi(2)];
+sto_mono_indi = [sto_mono_indi,sto_indi(2)];
+load("Result\RESISTANT_250.mat")
+hl_mono_indi  = [hl_mono_indi,hl_indi(2)];
+dyn_mono_indi = [dyn_mono_indi,dyn_indi(2)];
+sto_mono_indi = [sto_mono_indi,sto_indi(2)];
+
+x = [x,hl_mono_indi,dyn_mono_indi,sto_mono_indi];
+
+group    = [1,1,2,2,3,3,4,4,5,5,6,6];
+xline(Conc)
+hold on
+% hl_indi_hist = [hl_indi_hist,hl_mono_indi];
+% dyn_indi_hist = [dyn_indi_hist,dyn_mono_indi];
+% sto_indi_hist = [sto_indi_hist,sto_mono_indi];
+% scatter(hl_indi_hist,[1,1,2,2],128,'o')
+% scatter(dyn_indi_hist,[1,1,2,2],128,'square')
+% scatter(sto_indi_hist,[1,1,2,2],128,'diamond')
+s1 = scatter([hl_mix_s,hl_mono_indi(1)],[1,2],128,'o','filled','MarkerEdgeColor',GR1_color,'MarkerFaceColor',GR1_color,'LineWidth',3);
+s2 = scatter([dyn_mix_s,dyn_mono_indi(1)],[1,2],128,'square','filled','MarkerEdgeColor',GR1_color,'MarkerFaceColor',GR1_color,'LineWidth',3);
+s3 = scatter([sto_mix_s,sto_mono_indi(1)],[1,2],128,'diamond','filled','MarkerEdgeColor',GR1_color,'MarkerFaceColor',GR1_color,'LineWidth',3);
+s4 = scatter([hl_mix_r,hl_mono_indi(2)],[1,2],128,'o','filled','MarkerEdgeColor',GR2_color,'MarkerFaceColor',GR2_color,'LineWidth',3);
+s5 = scatter([dyn_mix_r,dyn_mono_indi(2)],[1,2],128,'square','filled','MarkerEdgeColor',GR2_color,'MarkerFaceColor',GR2_color,'LineWidth',3);
+s6 = scatter([sto_mix_r,sto_mono_indi(2)],[1,2],128,'diamond','filled','MarkerEdgeColor',GR2_color,'MarkerFaceColor',GR2_color,'LineWidth',3);
+% gscatter(x,y,group,'bry','sssddd',35,'on','Concentration')
+legend([s1,s2,s3,s4,s5,s6],{'PhenoPop sensitive','End-points sensitive','Live cell image sensitive','PhenoPop resistant','End-points resistant','Live cell image resistant'},'Location','northwest')
+yticks([1,2])
+yticklabels({'Mixture','Monoclonal'})
+xlabel('Concentration')
+
+
+ax5.Layout.Tile = 5;
+ax5.Layout.TileSpan = [1 4];
+
+
+
+
+
+
+
+% %% Plot point estimation from MONOCLONAL data
+% 
+% hl_indi_r  = [];
+% dyn_indi_r = [];
+% sto_indi_r = [];
+% hl_indi_s  = [];
+% dyn_indi_s = [];
+% sto_indi_s = [];
+% 
+% 
+% 
+% load('RESISTANT_250.mat')
+% hl_indi_r  = [hl_indi_r;hl_indi];
+% dyn_indi_r = [dyn_indi_r;dyn_indi];
+% sto_indi_r = [sto_indi_r;sto_indi];
+% load('RESISTANT_500.mat')
+% hl_indi_r  = [hl_indi_r;hl_indi];
+% dyn_indi_r = [dyn_indi_r;dyn_indi];
+% sto_indi_r = [sto_indi_r;sto_indi];
+% load('RESISTANT_250_HL_MONO.mat')
+% hl_indi_r  = [hl_indi_r;hl_indi];
+% dyn_indi_r = [dyn_indi_r;dyn_indi];
+% sto_indi_r = [sto_indi_r;sto_indi];
+% load('RESISTANT_500_HL_MONO.mat')
+% hl_indi_r  = [hl_indi_r;hl_indi];
+% dyn_indi_r = [dyn_indi_r;dyn_indi];
+% sto_indi_r = [sto_indi_r;sto_indi];
+% load('SENSITIVE_500.mat')
+% hl_indi_s  = [hl_indi_s;hl_indi];
+% dyn_indi_s = [dyn_indi_s;dyn_indi];
+% sto_indi_s = [sto_indi_s;sto_indi];
+% load('SENSITIVE_1000.mat')
+% hl_indi_s  = [hl_indi_s;hl_indi];
+% dyn_indi_s = [dyn_indi_s;dyn_indi];
+% sto_indi_s = [sto_indi_s;sto_indi];
+% load('SENSITIVE_500_HL_MONO.mat')
+% hl_indi_s  = [hl_indi_s;hl_indi];
+% dyn_indi_s = [dyn_indi_s;dyn_indi];
+% sto_indi_s = [sto_indi_s;sto_indi];
+% load('SENSITIVE_1000_HL_MONO.mat')
+% hl_indi_s  = [hl_indi_s;hl_indi];
+% dyn_indi_s = [dyn_indi_s;dyn_indi];
+% sto_indi_s = [sto_indi_s;sto_indi];
+% 
+% % hold on
+% % y_lim = [0 3];
+% % xlim([0.01 5])
+% % ylim(y_lim)
+% % xticks(Conc)
+% % 
+% % 
+% % y_mono = 2;
+% % y_nomo = 1;
+
+
+
