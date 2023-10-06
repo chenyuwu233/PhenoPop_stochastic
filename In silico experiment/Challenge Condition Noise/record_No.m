@@ -259,84 +259,91 @@ Prec_diff_GR2_sto = [];
 No       = [100,200,300,400,500];
 
 %%
-for i = 111:142
-    if i == 113 || i == 126 ||i == 147 ||i == 149
-        continue
-    end
-    name = append('sup_Noise_quant',num2str(i),'(var_fixed).mat');
-    load(name)
-    Prec_p = [];
-    Prec_GR1 = [];
-    Prec_GR2 = [];
-    for k = 1:5
-        theta = Info.theta;
-        theta(12) = No(k);
-        indi_ip  = get_indi(theta,Info.Conc(end));
-        Boot_hl  = hl.hist(11*k-10:11*k,:);
-        Boot_dyn = dyn.hist(12*k-11:12*k,:);
-        Boot_sto = sto.hist(12*k-11:12*k,:);
-        Boot_hl_GR  = [];
-        Boot_dyn_GR = [];
-        Boot_sto_GR = [];
-        for j = 1:100
-            indi_hl  = get_indi(Boot_hl(:,j),Info.Conc(end));
-            indi_dyn = get_indi(Boot_dyn(:,j),Info.Conc(end));
-            indi_sto = get_indi(Boot_sto(:,j),Info.Conc(end));
-            Boot_hl_GR  = [Boot_hl_GR,indi_hl(4:5)'];
-            Boot_dyn_GR = [Boot_dyn_GR,indi_dyn(4:5)'];
-            Boot_sto_GR = [Boot_sto_GR,indi_sto(4:5)'];
-        end
-%         prec_p_hl    = abs(mean(Boot_hl(5,:)) - indi_ip(1))/indi_ip(1);
-%         prec_GR1_hl  = abs(mean(Boot_hl_GR(1,:)) - indi_ip(4))/indi_ip(4);
-%         prec_GR2_hl  = abs(mean(Boot_hl_GR(2,:)) - indi_ip(5))/indi_ip(5);
-%         prec_p_dyn   = abs(mean(Boot_dyn(1,:)) - indi_ip(1))/indi_ip(1);
-%         prec_GR1_dyn = abs(mean(Boot_dyn_GR(1,:)) - indi_ip(4))/indi_ip(4);
-%         prec_GR2_dyn = abs(mean(Boot_dyn_GR(2,:)) - indi_ip(5))/indi_ip(5);
-%         prec_p_sto   = abs(mean(Boot_sto(1,:)) - indi_ip(1))/indi_ip(1);
-%         prec_GR1_sto = abs(mean(Boot_sto_GR(1,:)) - indi_ip(4))/indi_ip(4);
-%         prec_GR2_sto = abs(mean(Boot_sto_GR(2,:)) - indi_ip(5))/indi_ip(5);
-        
-%         prec_p_hl    = max(log(mean(Boot_hl(5,:))/indi_ip(1)),log(indi_ip(1)/mean(Boot_hl(5,:))));
-%         prec_GR1_hl  = max(log(mean(Boot_hl_GR(1,:))/indi_ip(4)),log(indi_ip(4)/mean(Boot_hl_GR(1,:))));
-%         prec_GR2_hl  = max(log(mean(Boot_hl_GR(2,:))/indi_ip(5)),log(indi_ip(5)/mean(Boot_hl_GR(2,:))));
-%         prec_p_dyn   = max(log(mean(Boot_dyn(1,:))/indi_ip(1)),log(indi_ip(1)/mean(Boot_dyn(1,:))));
-%         prec_GR1_dyn = max(log(mean(Boot_dyn_GR(1,:))/indi_ip(4)),log(indi_ip(4)/mean(Boot_dyn_GR(1,:))));
-%         prec_GR2_dyn = max(log(mean(Boot_dyn_GR(2,:))/indi_ip(5)),log(indi_ip(5)/mean(Boot_dyn_GR(2,:))));
-%         prec_p_sto   = max(log(mean(Boot_sto(1,:))/indi_ip(1)),log(indi_ip(1)/mean(Boot_sto(1,:))));
-%         prec_GR1_sto = max(log(mean(Boot_sto_GR(1,:))/indi_ip(4)),log(indi_ip(4)/mean(Boot_sto_GR(1,:))));
-%         prec_GR2_sto = max(log(mean(Boot_sto_GR(2,:))/indi_ip(5)),log(indi_ip(5)/mean(Boot_sto_GR(2,:))));
+for i = 91:120
+%     if i == 113 || i == 126 ||i == 147 ||i == 149
+%         continue
+%     end
+    name = append('Result\sup_Noise_quant',num2str(i),'(point_estimate).mat');
+    try
+        load(name)
+        Prec_p = [];
+        Prec_GR1 = [];
+        Prec_GR2 = [];
+        for k = 1:5
+            theta(12) = No(k);
+            indi_ip  = get_indi(theta,Conc(end));
+            indi_hl  = get_indi(opt_hl_hist(:,k),Conc(end));
+            indi_dyn  = get_indi(opt_dyn_hist(:,k),Conc(end));
+            indi_sto  = get_indi(opt_sto_hist(:,k),Conc(end));
 
-
-        prec_p_hl    = abs(log(mean(Boot_hl(5,:))/indi_ip(1)));
-        prec_GR1_hl  = abs(log(mean(Boot_hl_GR(1,:))/indi_ip(4)));
-        prec_GR2_hl  = abs(log(mean(Boot_hl_GR(2,:))/indi_ip(5)));
-        prec_p_dyn   = abs(log(mean(Boot_dyn(1,:))/indi_ip(1)));
-        prec_GR1_dyn = abs(log(mean(Boot_dyn_GR(1,:))/indi_ip(4)));
-        prec_GR2_dyn = abs(log(mean(Boot_dyn_GR(2,:))/indi_ip(5)));
-        prec_p_sto   = abs(log(mean(Boot_sto(1,:))/indi_ip(1)));
-        prec_GR1_sto = abs(log(mean(Boot_sto_GR(1,:))/indi_ip(4)));
-        prec_GR2_sto = abs(log(mean(Boot_sto_GR(2,:))/indi_ip(5)));
-
-%         prec_p = [prec_p_hl-prec_p_sto; prec_p_dyn-prec_p_sto];
-%         prec_GR1 = [prec_GR1_hl-prec_GR1_sto; prec_GR1_dyn-prec_GR1_sto];
-%         prec_GR2 = [prec_GR2_hl-prec_GR2_sto; prec_GR2_dyn-prec_GR2_sto];
-        prec_p = [prec_p_hl; prec_p_dyn; prec_p_sto];
-        prec_GR1 = [prec_GR1_hl; prec_GR1_dyn; prec_GR1_sto];
-        prec_GR2 = [prec_GR2_hl; prec_GR2_dyn; prec_GR2_sto];
+%             Boot_hl  = hl.hist(11*k-10:11*k,:);
+%             Boot_dyn = dyn.hist(12*k-11:12*k,:);
+%             Boot_sto = sto.hist(12*k-11:12*k,:);
+%             Boot_hl_GR  = [];
+%             Boot_dyn_GR = [];
+%             Boot_sto_GR = [];
+%             for j = 1:100
+%                 indi_hl  = get_indi(Boot_hl(:,j),Info.Conc(end));
+%                 indi_dyn = get_indi(Boot_dyn(:,j),Info.Conc(end));
+%                 indi_sto = get_indi(Boot_sto(:,j),Info.Conc(end));
+%                 Boot_hl_GR  = [Boot_hl_GR,indi_hl(4:5)'];
+%                 Boot_dyn_GR = [Boot_dyn_GR,indi_dyn(4:5)'];
+%                 Boot_sto_GR = [Boot_sto_GR,indi_sto(4:5)'];
+%             end
+    %         prec_p_hl    = abs(mean(Boot_hl(5,:)) - indi_ip(1))/indi_ip(1);
+    %         prec_GR1_hl  = abs(mean(Boot_hl_GR(1,:)) - indi_ip(4))/indi_ip(4);
+    %         prec_GR2_hl  = abs(mean(Boot_hl_GR(2,:)) - indi_ip(5))/indi_ip(5);
+    %         prec_p_dyn   = abs(mean(Boot_dyn(1,:)) - indi_ip(1))/indi_ip(1);
+    %         prec_GR1_dyn = abs(mean(Boot_dyn_GR(1,:)) - indi_ip(4))/indi_ip(4);
+    %         prec_GR2_dyn = abs(mean(Boot_dyn_GR(2,:)) - indi_ip(5))/indi_ip(5);
+    %         prec_p_sto   = abs(mean(Boot_sto(1,:)) - indi_ip(1))/indi_ip(1);
+    %         prec_GR1_sto = abs(mean(Boot_sto_GR(1,:)) - indi_ip(4))/indi_ip(4);
+    %         prec_GR2_sto = abs(mean(Boot_sto_GR(2,:)) - indi_ip(5))/indi_ip(5);
+            
+    %         prec_p_hl    = max(log(mean(Boot_hl(5,:))/indi_ip(1)),log(indi_ip(1)/mean(Boot_hl(5,:))));
+    %         prec_GR1_hl  = max(log(mean(Boot_hl_GR(1,:))/indi_ip(4)),log(indi_ip(4)/mean(Boot_hl_GR(1,:))));
+    %         prec_GR2_hl  = max(log(mean(Boot_hl_GR(2,:))/indi_ip(5)),log(indi_ip(5)/mean(Boot_hl_GR(2,:))));
+    %         prec_p_dyn   = max(log(mean(Boot_dyn(1,:))/indi_ip(1)),log(indi_ip(1)/mean(Boot_dyn(1,:))));
+    %         prec_GR1_dyn = max(log(mean(Boot_dyn_GR(1,:))/indi_ip(4)),log(indi_ip(4)/mean(Boot_dyn_GR(1,:))));
+    %         prec_GR2_dyn = max(log(mean(Boot_dyn_GR(2,:))/indi_ip(5)),log(indi_ip(5)/mean(Boot_dyn_GR(2,:))));
+    %         prec_p_sto   = max(log(mean(Boot_sto(1,:))/indi_ip(1)),log(indi_ip(1)/mean(Boot_sto(1,:))));
+    %         prec_GR1_sto = max(log(mean(Boot_sto_GR(1,:))/indi_ip(4)),log(indi_ip(4)/mean(Boot_sto_GR(1,:))));
+    %         prec_GR2_sto = max(log(mean(Boot_sto_GR(2,:))/indi_ip(5)),log(indi_ip(5)/mean(Boot_sto_GR(2,:))));
     
-        Prec_p = [Prec_p, prec_p];
-        Prec_GR1 = [Prec_GR1,prec_GR1];
-        Prec_GR2 = [Prec_GR2,prec_GR2];
+    
+            prec_p_hl    = abs(log(indi_hl(1)/indi_ip(1)));
+            prec_GR1_hl  = abs(log(indi_hl(4)/indi_ip(4)));
+            prec_GR2_hl  = abs(log(indi_hl(5)/indi_ip(5)));
+            prec_p_dyn   = abs(log(indi_dyn(1)/indi_ip(1)));
+            prec_GR1_dyn = abs(log(indi_dyn(4)/indi_ip(4)));
+            prec_GR2_dyn = abs(log(indi_dyn(5)/indi_ip(5)));
+            prec_p_sto   = abs(log(indi_sto(1)/indi_ip(1)));
+            prec_GR1_sto = abs(log(indi_sto(4)/indi_ip(4)));
+            prec_GR2_sto = abs(log(indi_sto(5)/indi_ip(5)));
+    
+    %         prec_p = [prec_p_hl-prec_p_sto; prec_p_dyn-prec_p_sto];
+    %         prec_GR1 = [prec_GR1_hl-prec_GR1_sto; prec_GR1_dyn-prec_GR1_sto];
+    %         prec_GR2 = [prec_GR2_hl-prec_GR2_sto; prec_GR2_dyn-prec_GR2_sto];
+            prec_p = [prec_p_hl; prec_p_dyn; prec_p_sto];
+            prec_GR1 = [prec_GR1_hl; prec_GR1_dyn; prec_GR1_sto];
+            prec_GR2 = [prec_GR2_hl; prec_GR2_dyn; prec_GR2_sto];
+        
+            Prec_p = [Prec_p, prec_p];
+            Prec_GR1 = [Prec_GR1,prec_GR1];
+            Prec_GR2 = [Prec_GR2,prec_GR2];
+        end
+        Prec_diff_p_hl = [Prec_diff_p_hl;Prec_p(1,:)];
+        Prec_diff_GR1_hl = [Prec_diff_GR1_hl;Prec_GR1(1,:)];
+        Prec_diff_GR2_hl = [Prec_diff_GR2_hl;Prec_GR2(1,:)];
+        Prec_diff_p_dyn = [Prec_diff_p_dyn;Prec_p(2,:)];
+        Prec_diff_GR1_dyn = [Prec_diff_GR1_dyn;Prec_GR1(2,:)];
+        Prec_diff_GR2_dyn = [Prec_diff_GR2_dyn;Prec_GR2(2,:)];
+        Prec_diff_p_sto = [Prec_diff_p_sto;Prec_p(3,:)];
+        Prec_diff_GR1_sto = [Prec_diff_GR1_sto;Prec_GR1(3,:)];
+        Prec_diff_GR2_sto = [Prec_diff_GR2_sto;Prec_GR2(3,:)];
+    catch
     end
-    Prec_diff_p_hl = [Prec_diff_p_hl;Prec_p(1,:)];
-    Prec_diff_GR1_hl = [Prec_diff_GR1_hl;Prec_GR1(1,:)];
-    Prec_diff_GR2_hl = [Prec_diff_GR2_hl;Prec_GR2(1,:)];
-    Prec_diff_p_dyn = [Prec_diff_p_dyn;Prec_p(2,:)];
-    Prec_diff_GR1_dyn = [Prec_diff_GR1_dyn;Prec_GR1(2,:)];
-    Prec_diff_GR2_dyn = [Prec_diff_GR2_dyn;Prec_GR2(2,:)];
-    Prec_diff_p_sto = [Prec_diff_p_sto;Prec_p(3,:)];
-    Prec_diff_GR1_sto = [Prec_diff_GR1_sto;Prec_GR1(3,:)];
-    Prec_diff_GR2_sto = [Prec_diff_GR2_sto;Prec_GR2(3,:)];
+%     pause
 end
 
 
@@ -429,7 +436,7 @@ for i = 91:121
     if i == 113 || i == 126 ||i == 147 ||i == 149
         continue
     end
-    name = append('sup_Noise_quant',num2str(i),'(var_fixed).mat');
+    name = append('Result\sup_Noise_quant',num2str(i),'(var_fixed).mat');
     load(name)
     true_param = get_indi(Info.theta,Info.Conc(end));
     if true_param(1) > hl10.quanti_p(2) || true_param(1) < hl10.quanti_p(1)
@@ -477,7 +484,7 @@ for i = 91:121
     if i == 113 || i == 126 ||i == 147 ||i == 149
         continue
     end
-    name = append('sup_Noise_quant',num2str(i),'(var_fixed).mat');
+    name = append('Result\sup_Noise_quant',num2str(i),'(var_fixed).mat');
     load(name)
     true_param = get_indi(Info.theta,Info.Conc(end));
     if true_param(1) > hl50.quanti_p(2) || true_param(1) < hl50.quanti_p(1)

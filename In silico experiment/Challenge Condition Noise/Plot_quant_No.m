@@ -1,4 +1,4 @@
-load('Result\NO_quant(30).mat')
+load('Result\NO_quant(30_pe).mat')
 
 IP = [100,200,300,400,500];
 t = tiledlayout(1,3);

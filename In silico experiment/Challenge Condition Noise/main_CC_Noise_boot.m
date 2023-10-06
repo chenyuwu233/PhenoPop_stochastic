@@ -11,8 +11,7 @@ parpool('local',24)
 %% Setting the seed
 rng(111)
 
-% load("Confidence_Interval40(New_gen_dn_sample_long_time).mat")
-%% Set up the feasible region
+%% Initialization
     
     options1 = optimoptions(@fmincon,'MaxFunctionEvaluations',5990,'MaxIterations',500,'Display','iter','algorithm','sqp');
     num_optim= 100;
@@ -96,69 +95,69 @@ rng(111)
 
 
     %% Generation bound
-             lb_GE = lb_BD;
-             ub_GE = ub_BD;
-             lb_GE(5)  = 0.05;
-             ub_GE(5)  = 0.1;
-             lb_GE(10) = 0.5;
-             ub_GE(10) = 2.5;
-             lb_GE(1)  = 0.3;
-%              ub_GE(1)  = 0.97;
-             lb_GE(4)  = 0.8;
-             ub_GE(4)  = 0.9;
-             lb_GE(9)  = 0.8;
-             ub_GE(9)  = 0.9;
-             ub_GE(6)  = 5;
-             lb_GE(6)  = 1.5;
-             ub_GE(11) = 5;
-             lb_GE(11) = 1.5;
-
-             NT      = 13; 
-             NC      = 11;
-             NR      = 20;
-
-
-opt_hl_hist  = [];
-opt_dyn_hist = [];
-opt_sto_hist = [];
-
-ci_hl_p    = [];
-ci_hl_GR1  = [];
-ci_hl_GR2  = [];
-ci_dyn_p   = [];
-ci_dyn_GR1 = [];
-ci_dyn_GR2 = [];
-ci_sto_p   = [];
-ci_sto_GR1 = [];
-ci_sto_GR2 = [];
-
-Conc = 10^(6)*[0 31.25*10^(-9) 62.5*10^(-9) 125*10^(-9) 250*10^(-9) 375*10^(-9) 500*10^(-9) 1.25*10^(-6) 2.5*10^(-6) 3.75*10^(-6) 5*10^(-6)];
-Time1 =   3*(0:NT-1);
-% 
-theta = rand(12,1).*(ub_GE-lb_GE) + lb_GE;
-theta(3) = max(0,theta(2) - rand * 0.1);
-theta(8) = max(theta(7) - rand * 0.1,0);
-NO       = [100,200,300,400,500];  % Noise level.
+        lb_GE = lb_BD;
+        ub_GE = ub_BD;
+        lb_GE(5)  = 0.05;
+        ub_GE(5)  = 0.1;
+        lb_GE(10) = 0.5;
+        ub_GE(10) = 2.5;
+        lb_GE(1)  = 0.3;
+        %              ub_GE(1)  = 0.97;
+        lb_GE(4)  = 0.8;
+        ub_GE(4)  = 0.9;
+        lb_GE(9)  = 0.8;
+        ub_GE(9)  = 0.9;
+        ub_GE(6)  = 5;
+        lb_GE(6)  = 1.5;
+        ub_GE(11) = 5;
+        lb_GE(11) = 1.5;
+        
+        NT      = 13; 
+        NC      = 11;
+        NR      = 20;
 
 
+        opt_hl_hist  = [];
+        opt_dyn_hist = [];
+        opt_sto_hist = [];
+        
+        ci_hl_p    = [];
+        ci_hl_GR1  = [];
+        ci_hl_GR2  = [];
+        ci_dyn_p   = [];
+        ci_dyn_GR1 = [];
+        ci_dyn_GR2 = [];
+        ci_sto_p   = [];
+        ci_sto_GR1 = [];
+        ci_sto_GR2 = [];
+        
+        Conc = 10^(6)*[0 31.25*10^(-9) 62.5*10^(-9) 125*10^(-9) 250*10^(-9) 375*10^(-9) 500*10^(-9) 1.25*10^(-6) 2.5*10^(-6) 3.75*10^(-6) 5*10^(-6)];
+        Time1 =   3*(0:NT-1);
+        % 
+        theta = rand(12,1).*(ub_GE-lb_GE) + lb_GE;
+        theta(3) = max(0,theta(2) - rand * 0.1);
+        theta(8) = max(theta(7) - rand * 0.1,0);
+        NO       = [100,200,300,400,500];  % Noise level.
 
 
 
-Prec_p   = [];
-Prec_GR1 = [];
-Prec_GR2 = [];
-ci_hl_p  = [];
-ci_hl_GR1 = [];
-ci_hl_GR2 = [];
-ci_dyn_p = [];
-ci_dyn_GR1 = [];
-ci_dyn_GR2 = [];
-ci_sto_p = [];
-ci_sto_GR1 = [];
-ci_sto_GR2 = [];
-opt_hl_hist = [];
-opt_dyn_hist = [];
-opt_sto_hist = [];
+
+
+        Prec_p   = [];
+        Prec_GR1 = [];
+        Prec_GR2 = [];
+        ci_hl_p  = [];
+        ci_hl_GR1 = [];
+        ci_hl_GR2 = [];
+        ci_dyn_p = [];
+        ci_dyn_GR1 = [];
+        ci_dyn_GR2 = [];
+        ci_sto_p = [];
+        ci_sto_GR1 = [];
+        ci_sto_GR2 = [];
+        opt_hl_hist = [];
+        opt_dyn_hist = [];
+        opt_sto_hist = [];
 % tic
 for no  = NO
 
@@ -343,7 +342,7 @@ Info.B_indi = B_indi;
 Info.Opt_fval = Opt_fval;
 
 
-save('Noise_quant111(var_fixed).mat','DATA1','dyn','hl','sto','Info','Prec_p','Prec_GR1','Prec_GR2');
+save('sup_Noise_quant111(var_fixed).mat','DATA1','dyn','hl','sto','Info','Prec_p','Prec_GR1','Prec_GR2');
 
 
 
