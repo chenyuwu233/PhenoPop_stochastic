@@ -43,7 +43,7 @@ axhl.FontSize = 25;
 axhl.FontWeight = 'bold';
 axhl.Colormap = Color;
 
-title('Phenopop')
+title('PhenoPop')
 
 axdyn  = nexttile;
 
@@ -59,6 +59,9 @@ axsto  = nexttile;
 
 hsto   = pie(sto_p);
 set(hsto(2:2:end),'FontSize',25,'FontWeight','bold');
+axsto.FontSize = 25;
+axsto.FontWeight = 'bold';
+axsto.Colormap = Color;
 
 title('Live cell image')
 
@@ -102,9 +105,9 @@ for i = 1:num_sub_GE
     fill(GRi_xconf,GR_yconf,Color(i,:),'FaceAlpha',0.3)
 end
 
-bh1 = boxplot(Est_GR(1:3,:)',["Phenopop", "End-points", "Live cell image"],"orientation","horizontal",'Symbol','*r');
-bh2 = boxplot(Est_GR(4:6,:)',["Phenopop", "End-points", "Live cell image"],"orientation","horizontal",'Symbol','*b');
-bh3 = boxplot(Est_GR(7:9,:)',["Phenopop", "End-points", "Live cell image"],"orientation","horizontal",'Symbol','*y');
+bh1 = boxplot(Est_GR(1:3,:)',["PhenoPop", "End-points", "Live cell image"],"orientation","horizontal",'Symbol','*r');
+bh2 = boxplot(Est_GR(4:6,:)',["PhenoPop", "End-points", "Live cell image"],"orientation","horizontal",'Symbol','*b');
+bh3 = boxplot(Est_GR(7:9,:)',["PhenoPop", "End-points", "Live cell image"],"orientation","horizontal",'Symbol','*y');
 % boxplot(Est_GR(10:12,:)',["Phenopop model", "End Points model", "Live Cell Image model"],"orientation","horizontal",'Symbol','*g')
 
 set(bh1,'LineWidth',3)
