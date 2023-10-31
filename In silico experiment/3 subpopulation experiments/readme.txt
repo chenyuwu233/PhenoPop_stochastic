@@ -1,5 +1,5 @@
 /**
- * Functions and scripts need to generate the 2 subpopulation experiments and plots (Figures 3,4,5,6,7)
+ * Functions and scripts need to generate the 3 subpopulation experiments and plots (Figure 9)
  *
  *  'main_PhenoPop_sto_3_pop.m': main script for 3 subpopulation experiments.
  *      Inside the script, we have 2 main sections:
